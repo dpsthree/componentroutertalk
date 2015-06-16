@@ -1,0 +1,27 @@
+{
+  "name": "'",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dpsthree/Gulp.jsTalk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpsthree/Gulp.jsTalk/issues"
+  },
+  "homepage": "https://github.com/dpsthree/Gulp.jsTalk",
+  "devDependencies": {
+    "gulp": "^3.8.1",
+    "gulp-jade": "^0.5.0",
+    "gulp-jshint": "^1.6.3",
+    "gulp-plumber": "^0.6.3",
+    "gulp-sass": "^0.7.2",
+    "gulp-watch": "^0.6.6-1"
+  }
+}
