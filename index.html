@@ -1,8 +1,260 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="css/reveal.min.css"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/custom.css"></head><body><div class="reveal"><div class="slides"><section><h1>gulp.js</h1></section><section><h2>Paul Spears</h2><div>paul.spears@oasisdigital.com</div></section><section><h1>What is gulp.js?</h1><div><ul><li>Jade and Sass Compilation</li><li>Compressing Images</li><li>Remove console and debugging statements</li><b><li>Pre-minify Angular Apps</li></b><li>Minify and Concatenate CSS and JS Files</li><li>Run Automated Test</li></ul><br><a href="http://www.gulpjs.com">gulpjs.com</a></div></section><section><h2>Gulp Uses Streams</h2><div>Why does this matter?</div><br><img src="images/node-stream-example.png" class="fragment"><img src="images/http-with-streams.png" class="fragment"></section><section><h1>The Gulp API</h1><ul><li>src</li><li>dest</li><li>task</li><li>watch</li></ul></section><section><h1>src</h1><img src="images/gulp-src-example.png"><br><div>"Takes a glob and represents a file structure. Can be piped to plugins"</div></section><section><h1>dest</h1><img src="images/gulp-dest-example.png"><br><span></span>"Can be piped to and it will write files. Re-emits all data passed to it so you can pipe to multiple folders. Folders that don't exist will be created."</section><section><h1>task</h1><img src="images/gulp-task-example.png"><br><span>"Define a task using Orchestrator."</span></section><section><h1>task cont.</h1><span>Q: What can you do in a task?</span><br><span>A: Anything you can do in a Node application.</span><img src="images/gulp-task-promise.png" class="fragment"></section><section><h2>Asynchronous execution is a Strength and Weakness of Gulp</h2><div>All tasks in Gulp execute Asynchronously</div><div>As a task runner there will be dependencies</div></section><section><span>We can provide task with hints</span><div>Hints come in 3 flavors</div><ol><li>Executing Callback</li><li>Returning Promises</li><li>Returning Streams</li></ol><br><a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md#async-task-support">Sync Support</a></section><section><h1>watch</h1><img src="images/gulp-watch-example.png"><br><span></span>"Watch files and do something when a file changes. This always returns an EventEmitter that emits change events."</section><section><h1>Plugins</h1><ul><li>gulp-jade</li><li>gulp-minify-css</li><li>gulp-minify-html</li><li>gulp-sass</li><li>gulp-ng-annotate</li><li>gulp-uglify</li><li>gulp-jshint</li></ul><div>605 Plugins as of June 2014</div></section><section><h1>Putting it All Together</h1></section><section><h1>Thanks!</h1><br><a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md" class="credit">Examples and Descriptions courtesy of gulp.js</a></section></div></div><script src="JS/reveal.min.js"></script><script>Reveal.initialize({
+<!DOCTYPE html>
+<html lang="en">
+<head><title>ComponentRouter</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section><h2>AngularJS Component Router</h2></section>
+        <section><h2>Paul Spears</h2>
+            <div>paul.spears@oasisdigital.com</div>
+            <div>@dpsthree</div>
+        </section>
+        <section>
+            <h2>What's it Called and Why?</h2>
+            <span>The New Router => ComponentRouter</span>
+            <aside class="notes">
+                Why name it component router? The router is a back porting of a staple idea in angular 2.0,
+                composition of applications from components. Even in 1.4 the plan for putting it in place is to
+                identify components of your application, group its pieces together, slap a label on it and assign it
+                to a route
+
+                So lets get started. We are going to dive into the basics and run through them real quick then look at
+                some code.
+            </aside>
+        </section>
+        <section><h2>Where do I get it?</h2>
+            <ul>
+                <li>Pre-built
+                    <ul>
+                        <li>npm install angular-new-router</li>
+                    </ul>
+                </li>
+                <li>Compile from source
+                    <ul>
+                        <li>https://github.com/angular/angular (currently ahead)</li>
+                        <li>https://github.com/angular/router</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                As of today where you choose to get this from makes a big difference. But we will get into that
+                as it comes up
+            </aside>
+        </section>
+        <section>
+            <h2>Plug It In</h2>
+            <pre>
+                <code data-trim class="xml">
+&lt;body&gt;
+
+    &lt;script src="lib/angular/dist/angular.js"&gt;&lt;/script&gt;
+    &lt;script src="lib/componentRouter/dist/angular-new-router.es5.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+                </code>
+            </pre>
+            <pre><code class="javascript">
+var myApp = angular.module('myApp', ['ngNewRouter'])
+            </code></pre>
+        </section>
+        <section>
+            <h2>Create Application Controller</h2>
+            <pre>
+                <code class="javascript">
+myApp.controller('MyAppCtrl', function() {
+});
+                </code>
+            </pre>
+            <aside class="notes">
+                The controller that is identified/created will have code added to it to setup the router.
+                Unlike ngRoute and uiRouter the component router operates as part of the run cycle (or at run time).
+                So which controller you pick does matter as you likely want the controller with the routing code to
+                run first
+            </aside>
+        </section>
+        <section><h2>Inject $router</h2>
+            <pre><code class="javascript">
+myApp.controller('MyAppCtrl', function($router) {
+});
+            </code></pre>
+            <aside class="notes">
+                Lets set this aside to create our first component
+            </aside>
+        </section>
+        <section><h2>Create a component</h2>
+
+            <div>Components consist of a template and a controller</div>
+            <br>
+
+            <div>*Template must reside at:</div>
+            <div>approot/components/ComponentName/ComponentName.html</div>
+            <br>
+
+            <div>*Controller must be named:</div>
+            <div>ComponentNameController</div>
+        </section>
+        <section><span>approot/components/home/home.html</span>
+            <pre><code class="xml">
+&lt;h1&gt;Hello from the Home Page&lt;/h1&gt;
+&lt;span&gt;Displaying a message from the controller {{home.message}}&lt;/span&gt;
+            </code></pre>
+            <span>approot/components/home/home.js</span>
+            <pre><code class="javascript">
+angular.module('homeModule', [])
+.controller('homeController', homeController);
+
+function homeController () {
+    this.message = 'Im in the home controller';
+}
+            </code></pre>
+        </section>
+        <section>
+            <h2>Route to the Component</h2>
+            <pre><code class="javascript">
+myApp.controller('MyAppCtrl', function($router) {
+    $router.config([
+        { path: '/', redirectTo: '/home' },
+        { path: '/home', component: 'home' }
+    ]);
+});
+            </code></pre>
+        </section>
+        <section><h2>Add a Viewport</h2>
+            <div>(not to be confused with a viewport)</div>
+            <pre><code class="xml">
+&lt;body&gt;
+    &lt;ng-viewport&gt;&lt;/ng-viewport&gt;
+    &lt;!--Coming Soon!!--&gt;
+    &lt;ng-outlet&gt;&lt;/ng-outlet&gt;
+
+    &lt;script src="lib/angular/dist/angular.js"&gt;&lt;/script&gt;
+    &lt;script src="lib/componentRouter/dist/angular-new-router.es5.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+            </code></pre>
+            <aside class="notes">
+                ng-outlet is coming soon, as in if you build from source it is already there
+            </aside>
+        </section>
+        <section>
+            <h1>Congratulations!!!</h1>
+            <img src="images/giphy.gif">
+            <aside class="notes">
+                Congratulations you have your first application running on the new router.
+                Lets go to the bar and enjoy a choice adult beverage. You earned it!
+            </aside>
+        </section>
+        <section><h2>Hold on?!</h2>
+
+            <div>What about:</div>
+            <ul>
+                <li class="fragment">Resolve</li>
+                <li class="fragment">Event Handlers</li>
+                <li class="fragment">Nested Views</li>
+                <li class="fragment">Controller As</li>
+            </ul>
+            <aside class="notes">
+                These concepts mostly have an equivelent in the new router, but they are either
+                on the way or we don't talk about them the same way. Resolve: implemented with life cycle hooks.
+                Event Handlers: functionality moved to life cycle hooks. Nested Views: currently broken. Controller As:
+                does not exist, but you are automatically aliasing using the component name
+            </aside>
+        </section>
+        <section>
+            <h2>Lets Look at Resolve</h2>
+            <div>Lets add another component</div>
+            <pre><code class="javascript">
+myApp.controller('MyAppCtrl', function($router) {
+    $router.config([
+        { path: '/', redirectTo: '/home' },
+        { path: '/home', component: 'home' },
+        { path: '/user/:id', component: 'user' }
+    ]);
+});
+            </code></pre>
+        </section>
+        <section>
+            <h2>Adding ng-link</h2>
+            <pre><code class="xml">
+&lt;h1&gt;Hello from the Home Page&lt;/h1&gt;
+&lt;span&gt;Displaying a message from the controller {{home.message}}&lt;/span&gt;
+&lt;a ng-link='user({id:12345})'&gt;Click here to view user details&lt;/a&gt;
+            </code></pre>
+        </section>
+        <section>
+            <span>approot/components/user/user.html</span>
+            <pre><code class="xml">
+&lt;h1&gt;Hello from the user Page&lt;/h1&gt;
+&lt;span&gt;Username: {{user.username}}&lt;/span&gt;
+            </code></pre>
+            <span>approot/components/user/user.js</span>
+            <pre><code class="javascript">
+angular.module('userModule', [])
+.controller('userController', userController);
+
+function userController ($routeParams, userService) {
+    var uctrl = this;
+    userService.getUserDetails($routeParams.id).then(function (details) {
+        uctrl.user = details;
+    });
+}
+            </code></pre>
+        </section>
+        <aside class="notes">
+            Setup for next slide: Now lets say we want the fetching of our data to be a requirement before navigating.
+            Before we would use resolve. Now we have a life cycle hook. With life cycle hooks you can augment your
+            controller by stating what the startup requirements are for your component.
+        </aside>
+        <section>
+            <h2>Component Router "Resolve"</h2>
+            <pre><code class="javascript">
+angular.module('userModule', [])
+.controller('userController', userController);
+
+function userController ($routeParams, userService) {
+    var uctrl = this;
+    uctrl.dataPromise = userService.getUserDetails($routeParams.id).then(function (details) {
+        uctrl.user = details;
+    });
+}
+
+userController.prototype.canActivate = function () {
+    return this.dataPromise;
+};
+            </code></pre>
+            <aside class="notes">
+                This is the canActivate hook. It must return a successful promise before the router will navigate to this
+                page. An important note, this prevents routing, but controller execution always occurs regardless.
+
+                Explain how "this" is the same everywhere
+                hand wave over the service
+                explain promises enough to show how this works
+
+                There also exists activate canDeactivate and deActivate
+            </aside>
+        </section>
+        <section>
+            <h2>Lets look at some more code</h2>
+        </section>
+    </div>
+</div>
+<script src="js/reveal.js"></script>
+<script src="lib/js/head.min.js"></script>
+<script>Reveal.initialize({
     controls: false,
     progress: true,
     history: false,
     center: true,
-    theme: Reveal.getQueryHash().theme,
-    transition: 'linear',
-});</script></body></html>
+    theme: "black",
+    transition: "linear",
+    dependencies: [
+        {src: "plugin/notes/notes.js", async: true},
+        { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+    ]
+});
+</script>
+</body>
+</html>

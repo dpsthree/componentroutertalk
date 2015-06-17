@@ -1,0 +1,19 @@
+<div class="text-center">
+    <h1>Select a wizard below for more details</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-2" style="font-size: 24px">
+                Find your Wizard Here!
+                <input type="text" ng-model="wizList.nameSearch.text">
+            </div>
+            <div class="col-xs-10">
+                <div class="flexbox">
+                    <span class="flexitem" ng-click="wizList.goToWizard(wizard.text)" ng-repeat="wizard in wizList.wizardList | filter:wizList.nameSearch">
+                        <img ng-src="{{wizard.details.thumbnail}}">
+                        <div>{{wizard.text}}</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

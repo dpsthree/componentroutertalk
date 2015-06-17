@@ -1,0 +1,47 @@
+@font-face {
+    font-family: "Harry P";
+    src: url('../harryp.ttf') format('truetype');
+}
+
+body {
+    font-family: "Harry P";
+    color: white;
+    background-color: black;
+}
+
+.clockwise-tilted-text {
+    display: inline-block;
+    -webkit-transform: rotate(25deg);
+    font-size: 24px;
+}
+
+.counter-clockwise-tilted-text {
+    display: inline-block;
+    -webkit-transform: rotate(-25deg);
+    font-size: 24px;
+}
+
+.flexbox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexitem {
+    min-width: 200px;
+    flex-grow: 1;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+input {
+    color: black;
+    font-size: 24px;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-size: 60px;
+}
